@@ -30,14 +30,14 @@ public class AutodetectWorkManagerExecutorService {
           DetectClassUtils.isPresent(JCA_WORKMANAGER_CLASS_NAME, AutodetectWorkManagerExecutorService.class.getClassLoader());
   
   public static ExecutorService getExecutorService(JcaExecutorServiceConnector ra) {
-    if (commonjWorkManagerPresent) {
-      log.info("Auto-detected CommonJ WorkManager class. Using " + CommonJWorkManagerExecutorService.class.getName());
-      return new CommonJWorkManagerExecutorService(ra);
-      
-    } else if (jcaWorkManagerPresent) {
+    if (jcaWorkManagerPresent) {
       log.info("Auto-detected JCA WorkManager class. Using " + JcaWorkManagerExecutorService.class.getName());
       return new JcaWorkManagerExecutorService(ra);
-      
+    }
+    else if (commonjWorkManagerPresent) {
+        log.info("Auto-detected CommonJ WorkManager class. Using " + CommonJWorkManagerExecutorService.class.getName());
+        return new CommonJWorkManagerExecutorService(ra);
+        
     } else {
       // unable to detect any usable WorkManager
       throw new RuntimeException("Error while starting JobExecutor: could not detect commonJ WorkManager or any JCA WorkManager implementation on classpath.");

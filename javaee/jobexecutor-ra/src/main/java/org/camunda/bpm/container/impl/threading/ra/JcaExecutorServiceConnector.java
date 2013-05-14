@@ -1,5 +1,6 @@
 package org.camunda.bpm.container.impl.threading.ra;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,9 @@ import org.camunda.bpm.container.impl.threading.ra.util.AutodetectWorkManagerExe
     reauthenticationSupport = false, 
     transactionSupport = TransactionSupport.TransactionSupportLevel.NoTransaction
   )
-public class JcaExecutorServiceConnector implements ResourceAdapter {
+public class JcaExecutorServiceConnector implements ResourceAdapter, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private static Logger log = Logger.getLogger(JcaExecutorServiceConnector.class.getName());
 

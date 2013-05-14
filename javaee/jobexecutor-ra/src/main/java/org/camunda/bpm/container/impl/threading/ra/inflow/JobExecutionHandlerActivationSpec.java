@@ -1,5 +1,7 @@
 package org.camunda.bpm.container.impl.threading.ra.inflow;
 
+import java.io.Serializable;
+
 import javax.resource.spi.Activation;
 import javax.resource.spi.ActivationSpec;
 import javax.resource.spi.InvalidPropertyException;
@@ -15,9 +17,11 @@ import javax.resource.spi.ResourceAdapter;
 @Activation(
   messageListeners = { JobExecutionHandler.class }
 )
-public class JobExecutionHandlerActivationSpec implements ActivationSpec {
+public class JobExecutionHandlerActivationSpec implements ActivationSpec, Serializable {
 
-  private ResourceAdapter ra;
+	private static final long serialVersionUID = 1L;
+	
+	private ResourceAdapter ra;
 
   public void validate() throws InvalidPropertyException {
     // nothing to do (the endpoint has no activation properties)

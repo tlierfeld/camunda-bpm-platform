@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>camunda-weblogic-ear</artifactId>
+  <name>camunda BPM - Weblogic 12c EAR</name>
+  <packaging>ear</packaging>
+
+  <parent>
+    <groupId>org.camunda.bpm.wls</groupId>
+    <artifactId>camunda-weblogic</artifactId>
+    <version>7.0.0-alpha3</version>
+  </parent>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <version>6</version>
+          <defaultLibBundleDir>lib</defaultLibBundleDir>
+          <applicationName>camunda-bpm-platform</applicationName>          
+        </configuration>
+      </plugin>      
+    </plugins>
+  </build>
+
+  <dependencies>     
+    <dependency>
+      <groupId>org.camunda.bpm.wls</groupId>
+      <artifactId>camunda-weblogic-service</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+    </dependency>  
+
+    <!-- exclude engine from ear -->
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <scope>provided</scope>
+    </dependency>      
+  </dependencies>
+
+</project>

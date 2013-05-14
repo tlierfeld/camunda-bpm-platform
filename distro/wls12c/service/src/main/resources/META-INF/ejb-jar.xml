@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+  version="3.1">
+  
+  <module-name>process-engine</module-name>
+  <display-name>process-engine</display-name>
+
+<!-- ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xmlns="http://java.sun.com/xml/ns/j2ee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd" 
+		 version="2.1"-->
+<!-- ejb-jar version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd" -->
+		 
+<!-- 
+<enterprise-beans>
+	<message-driven>
+		<ejb-name>JobExecutionHandlerMDB</ejb-name>
+		<ejb-class>org.camunda.bpm.container.impl.ejb.JobExecutionHandlerMDB</ejb-class>
+		<transaction-type>Bean</transaction-type>
+		<message-destination-type>javax.jms.Queue</message-destination-type>
+	</message-driven>
+</enterprise-beans>
+ -->
+</ejb-jar>
