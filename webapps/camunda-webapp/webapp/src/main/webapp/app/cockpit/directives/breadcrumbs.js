@@ -2,9 +2,11 @@
 
 ngDefine('cockpit.directives', [ 'angular' ], function(module, angular) {
 
-  function DirectiveController($scope, $element, $attrs, $rootScope, ProcessInstanceResource, ProcessDefinitionResource) {
+  function DirectiveController($scope, $element, $attrs, $rootScope, ProcessInstanceResource, ProcessDefinitionResource, Views) {
 
     $rootScope.breadcrumbs = [];
+
+    $scope.viewActions = Views.getProviders({ component: 'cockpit.view.action' });
 
     $scope.expand = function (breadcrumb) {
       if (breadcrumb.processInstance) {
@@ -102,6 +104,9 @@ ngDefine('cockpit.directives', [ 'angular' ], function(module, angular) {
           '<a ng-click="expand(breadcrumb)" href title="Expand">...</a>' +   
         '</span>' +
       '</li>' +
+      '<li ng-repeat="action in viewActions">' +
+        '<ul class="nav-tabs" view provider="action"></ul>' +
+      '</li>' +
     '</ul>';
 
   var Directive = function (ProcessInstanceResource, ProcessDefinitionResource) {
@@ -112,7 +117,7 @@ ngDefine('cockpit.directives', [ 'angular' ], function(module, angular) {
     };
   };
 
-  Directive.$inject = [ 'ProcessInstanceResource', 'ProcessDefinitionResource' ];
+  Directive.$inject = [ 'ProcessInstanceResource', 'ProcessDefinitionResource', 'Views' ];
 
   module
     .directive('breadcrumbsPanel', Directive);
