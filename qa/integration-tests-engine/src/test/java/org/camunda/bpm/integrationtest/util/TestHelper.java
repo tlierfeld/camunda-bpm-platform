@@ -58,9 +58,9 @@ public abstract class TestHelper {
     InputStream expectedStream = null;
     try {
       actualStream = repositoryService.getProcessDiagram(processDefinition.getId());
-      byte[] actualDiagram = IoUtil.readInputStream(actualStream, "actualStream");
 
       if (deployed) {
+        byte[] actualDiagram = IoUtil.readInputStream(actualStream, "actualStream");
         assertNotNull(actualDiagram);
         assertTrue(actualDiagram.length > 0);
 
