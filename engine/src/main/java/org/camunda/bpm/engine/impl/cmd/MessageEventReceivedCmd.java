@@ -65,7 +65,7 @@ public class MessageEventReceivedCmd implements Command<Void>, Serializable {
     
     HashMap<String, Object> payload = null;
     if(processVariables != null) {
-      payload = new HashMap<String, Object>(processVariables);
+      payload = new HashMap<String, Object>(processVariables); // clone it?
     }
     
     eventSubscriptionEntity.eventReceived(payload, false);

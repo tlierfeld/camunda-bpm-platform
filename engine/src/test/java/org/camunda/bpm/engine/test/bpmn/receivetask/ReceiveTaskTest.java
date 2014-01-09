@@ -12,38 +12,81 @@
  */
 package org.camunda.bpm.engine.test.bpmn.receivetask;
 
+import org.camunda.bpm.engine.impl.event.MessageEventHandler;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 
+import java.util.List;
+
 /**
+ * see https://app.camunda.com/jira/browse/CAM-1612
+ *
  * @author Daniel Meyer
+ * @author Danny Gräf
  *
  */
-public abstract class ReceiveTaskTest extends PluggableProcessEngineTestCase {
+public class ReceiveTaskTest extends PluggableProcessEngineTestCase {
 
-  // https://app.camunda.com/jira/browse/CAM-1612
-  @Deployment
-  public void FAILING_testSupportsMessageEventReceived() {
+  @Deployment(resources = "org/camunda/bpm/engine/test/bpmn/receivetask/ReceiveTaskTest.singleReceiveTask.bpmn20.xml")
+  public void testSupportsMessageEventReceived() {
 
     // given: a process instance waiting in the receive task
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testProcess");
 
-    // then
+    // then: there is a message event subscription for the task
+    EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
+        .eventType(MessageEventHandler.EVENT_HANDLER_TYPE).singleResult();
+    assertNotNull(subscription);
 
-    // there is a message event subscription for the message
-    EventSubscription eventSubscription = runtimeService.createEventSubscriptionQuery()
-      .eventType("message")
-      .singleResult();
-    assertNotNull(eventSubscription);
+    // then: we can trigger the event subscription
+    runtimeService.messageEventReceived(subscription.getEventName(), subscription.getExecutionId());
 
-    // we can trigger the event subsrciption
-    runtimeService.messageEventReceived(eventSubscription.getEventName(), eventSubscription.getExecutionId());
-
-    // this ends the process instance
+    // expect: this ends the process instance
     assertProcessEnded(processInstance.getId());
+  }
 
+  @Deployment(resources = "org/camunda/bpm/engine/test/bpmn/receivetask/ReceiveTaskTest.multiReceiveTask.bpmn20.xml")
+  public void testSupportsMessageEventReceivedOnMultiInstance() {
+
+    // given: a process instance waiting in the receive task
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testProcess");
+
+    // then: there are two message event subscriptions
+    List<EventSubscription> subscriptions = runtimeService.createEventSubscriptionQuery()
+        .eventType(MessageEventHandler.EVENT_HANDLER_TYPE).list();
+    assertEquals(2, subscriptions.size());
+
+    // then: we can trigger the both event subscription
+    runtimeService.messageEventReceived(subscriptions.get(0).getEventName(), subscriptions.get(0).getExecutionId());
+    runtimeService.messageEventReceived(subscriptions.get(1).getEventName(), subscriptions.get(1).getExecutionId());
+
+    // expect: this ends the process instance
+    assertProcessEnded(processInstance.getId());
+  }
+
+  @Deployment(resources = "org/camunda/bpm/engine/test/bpmn/receivetask/ReceiveTaskTest.singleReceiveTask.bpmn20.xml")
+  public void testSupportsCorrelateMessage() {
+
+    // given: a process instance waiting in the receive task
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testProcess");
+
+    // then: there is a message event subscription for the task
+    EventSubscription subscription = runtimeService.createEventSubscriptionQuery()
+        .eventType(MessageEventHandler.EVENT_HANDLER_TYPE).singleResult();
+    assertNotNull(subscription);
+
+    // then: there is a message event subscription for the task
+    subscription = runtimeService.createEventSubscriptionQuery()
+        .eventType(MessageEventHandler.EVENT_HANDLER_TYPE).singleResult();
+    assertNotNull(subscription);
+
+    // then: we can correlate the event subscription
+    runtimeService.correlateMessage(subscription.getEventName());
+
+    // expect: this ends the process instance
+    assertProcessEnded(processInstance.getId());
   }
 
 }
