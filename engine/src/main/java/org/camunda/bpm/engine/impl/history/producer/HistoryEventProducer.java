@@ -15,9 +15,9 @@ package org.camunda.bpm.engine.impl.history.producer;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.VariableScopeImpl;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * <p>The producer for history events. The history event producer is
@@ -145,5 +145,5 @@ public interface HistoryEventProducer {
    * @param taskId
    * @return the history event
    */
-  public HistoryEvent createFormPropertyUpdateEvt(ExecutionEntity execution, String propertyId, Object propertyValue, String taskId);
+  public HistoryEvent createFormPropertyUpdateEvt(ActivityExecution execution, String propertyId, Object propertyValue, String taskId);
 }

@@ -20,7 +20,7 @@ import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cmd.SetProcessDefinitionVersionCmd;
 import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.Execution;
@@ -225,7 +225,7 @@ public class ProcessInstanceMigrationTest extends PluggableProcessEngineTestCase
       .processInstanceId(pi.getId())
       .list();
     for (Execution execution : executions) {
-      assertEquals(newProcessDefinition.getId(), ((ExecutionEntity) execution).getProcessDefinitionId());
+      assertEquals(newProcessDefinition.getId(), ((ActivityExecution) execution).getProcessDefinitionId());
     }
     
     // undeploy "manually" deployed process definition

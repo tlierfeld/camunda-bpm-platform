@@ -22,7 +22,7 @@ import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.impl.el.StartProcessVariableScope;
 import org.camunda.bpm.engine.impl.form.FormPropertyImpl;
 import org.camunda.bpm.engine.impl.form.type.AbstractFormFieldType;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**
@@ -40,7 +40,7 @@ public class FormPropertyHandler {
   protected Expression variableExpression;
   protected Expression defaultExpression;
 
-  public FormProperty createFormProperty(ExecutionEntity execution) {
+  public FormProperty createFormProperty(ActivityExecution execution) {
     FormPropertyImpl formProperty = new FormPropertyImpl(this);
     Object modelValue = null;
 
@@ -75,7 +75,7 @@ public class FormPropertyHandler {
     return formProperty;
   }
 
-  public void submitFormProperty(ExecutionEntity execution, Map<String, Object> properties) {
+  public void submitFormProperty(ActivityExecution execution, Map<String, Object> properties) {
     if (!isWritable && properties.containsKey(id)) {
       throw new ProcessEngineException("form property '"+id+"' is not writable");
     }

@@ -25,6 +25,7 @@ import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.VariableInstanceEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
@@ -771,7 +772,7 @@ public class TaskQueryTest extends PluggableProcessEngineTestCase {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     
     assertTrue(processInstance instanceof ExecutionEntity);
-    ExecutionEntity execution = (ExecutionEntity) processInstance;
+    ActivityExecution execution = (ActivityExecution) processInstance;
     String activityInstanceId = execution.getActivityInstanceId();
     
     assertEquals(1, taskService.createTaskQuery().activityInstanceIdIn(activityInstanceId).list().size());
@@ -782,13 +783,13 @@ public class TaskQueryTest extends PluggableProcessEngineTestCase {
     ProcessInstance processInstance1 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     
     assertTrue(processInstance1 instanceof ExecutionEntity);
-    ExecutionEntity execution1 = (ExecutionEntity) processInstance1;
+    ActivityExecution execution1 = (ActivityExecution) processInstance1;
     String activityInstanceId1 = execution1.getActivityInstanceId();
 
     ProcessInstance processInstance2 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     
     assertTrue(processInstance2 instanceof ExecutionEntity);
-    ExecutionEntity execution2 = (ExecutionEntity) processInstance2;
+    ActivityExecution execution2 = (ActivityExecution) processInstance2;
     String activityInstanceId2 = execution2.getActivityInstanceId();
     
     List<Task> result1 = taskService.createTaskQuery().activityInstanceIdIn(activityInstanceId1).list();

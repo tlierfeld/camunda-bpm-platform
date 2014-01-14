@@ -30,6 +30,7 @@ import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutorContext;
 import org.camunda.bpm.engine.impl.jobexecutor.MessageAddedNotification;
 import org.camunda.bpm.engine.impl.persistence.AbstractManager;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
 
@@ -85,7 +86,7 @@ public class JobManager extends AbstractManager {
     .addTransactionListener(TransactionState.COMMITTED, transactionListener);
   }
 
-  public void cancelTimers(ExecutionEntity execution) {
+  public void cancelTimers(ActivityExecution execution) {
     List<TimerEntity> timers = Context
       .getCommandContext()
       .getJobManager()

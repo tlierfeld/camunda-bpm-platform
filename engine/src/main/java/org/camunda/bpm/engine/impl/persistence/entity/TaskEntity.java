@@ -78,7 +78,7 @@ public class TaskEntity extends VariableScopeImpl implements Task, DelegateTask,
   protected ExecutionEntity execution;
 
   protected String processInstanceId;
-  protected ExecutionEntity processInstance;
+  protected ActivityExecution processInstance;
 
   protected String processDefinitionId;
 
@@ -611,10 +611,10 @@ public class TaskEntity extends VariableScopeImpl implements Task, DelegateTask,
   public void setExecutionId(String executionId) {
     this.executionId = executionId;
   }
-  public ExecutionEntity getProcessInstance() {
+  public ActivityExecution getProcessInstance() {
     return processInstance;
   }
-  public void setProcessInstance(ExecutionEntity processInstance) {
+  public void setProcessInstance(ActivityExecution processInstance) {
     this.processInstance = processInstance;
   }
   public void setExecution(ExecutionEntity execution) {

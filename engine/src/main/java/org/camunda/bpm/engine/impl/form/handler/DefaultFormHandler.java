@@ -33,6 +33,7 @@ import org.camunda.bpm.engine.impl.form.validator.FormFieldValidator;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 
 
@@ -245,7 +246,7 @@ public class DefaultFormHandler implements FormHandler {
     }
   }
 
-  protected void initializeFormProperties(FormDataImpl formData, ExecutionEntity execution) {
+  protected void initializeFormProperties(FormDataImpl formData, ActivityExecution execution) {
     List<FormProperty> formProperties = new ArrayList<FormProperty>();
     for (FormPropertyHandler formPropertyHandler: formPropertyHandlers) {
       if (formPropertyHandler.isReadable()) {
@@ -264,7 +265,7 @@ public class DefaultFormHandler implements FormHandler {
     }
   }
 
-  public void submitFormProperties(Map<String, Object> properties, ExecutionEntity execution) {
+  public void submitFormProperties(Map<String, Object> properties, ActivityExecution execution) {
     Map<String, Object> propertiesCopy = new HashMap<String, Object>(properties);
 
     // support legacy form properties

@@ -15,7 +15,7 @@ package org.camunda.bpm.engine.impl.history.parser;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
 import org.camunda.bpm.engine.impl.history.producer.HistoryEventProducer;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * @author Daniel Meyer
@@ -27,7 +27,7 @@ public class ActivityInstanceUpdateListener extends HistoryTaskListener {
     super(historyEventProducer);
   }
 
-  protected HistoryEvent createHistoryEvent(DelegateTask task, ExecutionEntity execution) {    
+  protected HistoryEvent createHistoryEvent(DelegateTask task, ActivityExecution execution) {    
     return eventProducer.createActivityInstanceUpdateEvt(execution, task);
   }
 

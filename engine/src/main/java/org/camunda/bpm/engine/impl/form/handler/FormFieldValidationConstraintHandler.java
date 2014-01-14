@@ -18,7 +18,7 @@ import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.form.FormFieldValidationConstraint;
 import org.camunda.bpm.engine.impl.form.FormFieldValidationConstraintImpl;
 import org.camunda.bpm.engine.impl.form.validator.FormFieldValidator;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * <p>Wrapper for a validation constraint</p>
@@ -32,13 +32,13 @@ public class FormFieldValidationConstraintHandler {
   protected String config;
   protected FormFieldValidator validator;
 
-  public FormFieldValidationConstraint createValidationConstraint(ExecutionEntity execution) {
+  public FormFieldValidationConstraint createValidationConstraint(ActivityExecution execution) {
     return new FormFieldValidationConstraintImpl(name, config);
   }
 
   // submit /////////////////////////////////
 
-  public void validate(Object submittedValue, Map<String, Object> submittedValues, FormFieldHandler formFieldHandler, ExecutionEntity execution) {
+  public void validate(Object submittedValue, Map<String, Object> submittedValues, FormFieldHandler formFieldHandler, ActivityExecution execution) {
     boolean isValid = validator.validate(submittedValue, new DefaultFormFieldValidatorContext(execution, config, submittedValues));
     if(!isValid) {
       throw new ProcessEngineException("Invalid value submitted for form field '"+formFieldHandler.getId()+"': validation of "+this+" failed.");

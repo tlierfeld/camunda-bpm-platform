@@ -21,7 +21,7 @@ import java.util.Map;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
@@ -168,7 +168,7 @@ public class VariableScopeTest extends PluggableProcessEngineTestCase {
         throw new ProcessEngineException("executionId is null");
       }
       
-      ExecutionEntity execution = commandContext
+      ActivityExecution execution = commandContext
         .getExecutionManager()
         .findExecutionById(executionId);
       

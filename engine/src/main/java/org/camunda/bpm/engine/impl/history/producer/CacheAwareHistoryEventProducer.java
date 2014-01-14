@@ -20,7 +20,7 @@ import org.camunda.bpm.engine.impl.history.event.HistoricProcessInstanceEventEnt
 import org.camunda.bpm.engine.impl.history.event.HistoricTaskInstanceEventEntity;
 import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
 import org.camunda.bpm.engine.impl.history.handler.DbHistoryEventHandler;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * <p>This HistoryEventProducer is aware of the {@link DbSqlSession} cache
@@ -31,7 +31,7 @@ import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
  */
 public class CacheAwareHistoryEventProducer extends DefaultHistoryEventProducer {
   
-   protected HistoricActivityInstanceEventEntity loadActivityInstanceEventEntity(ExecutionEntity execution) {
+   protected HistoricActivityInstanceEventEntity loadActivityInstanceEventEntity(ActivityExecution execution) {
     final String activityInstanceId = execution.getActivityInstanceId();
     
     HistoricActivityInstanceEventEntity cachedEntity = findInCache(HistoricActivityInstanceEventEntity.class, activityInstanceId);
@@ -46,7 +46,7 @@ public class CacheAwareHistoryEventProducer extends DefaultHistoryEventProducer 
     
   }
   
-  protected HistoricProcessInstanceEventEntity loadProcessInstanceEventEntity(ExecutionEntity execution) {
+  protected HistoricProcessInstanceEventEntity loadProcessInstanceEventEntity(ActivityExecution execution) {
     final String processInstanceId = execution.getProcessInstanceId();
     
     HistoricProcessInstanceEventEntity cachedEntity = findInCache(HistoricProcessInstanceEventEntity.class, processInstanceId);

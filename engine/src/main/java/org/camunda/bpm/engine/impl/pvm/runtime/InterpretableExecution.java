@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,7 +43,7 @@ public interface InterpretableExecution extends ActivityExecution, ExecutionList
   void setActivity(ActivityImpl activity);
 
   void performOperation(AtomicOperation etomicOperation);
-  
+
   void performOperationSync(AtomicOperation executionOperation);
 
   boolean isScope();
@@ -53,7 +53,10 @@ public interface InterpretableExecution extends ActivityExecution, ExecutionList
   void remove();
 
   InterpretableExecution getReplacedBy();
+
   void setReplacedBy(InterpretableExecution replacedBy);
+
+  void replace(InterpretableExecution execution);
 
   InterpretableExecution getSubProcessInstance();
   void setSubProcessInstance(InterpretableExecution subProcessInstance);
@@ -61,9 +64,9 @@ public interface InterpretableExecution extends ActivityExecution, ExecutionList
   InterpretableExecution getSuperExecution();
 
   void deleteCascade(String deleteReason);
-  
+
   void deleteCascade2(String deleteReason);
-  
+
   boolean isDeleteRoot();
 
   TransitionImpl getTransition();
@@ -76,13 +79,13 @@ public interface InterpretableExecution extends ActivityExecution, ExecutionList
   void setProcessDefinition(ProcessDefinitionImpl processDefinitionImpl);
 
   void setProcessInstance(InterpretableExecution processInstance);
-  
+
   boolean isEventScope();
-  
+
   void setEventScope(boolean isEventScope);
-  
+
   ProcessInstanceStartContext getProcessInstanceStartContext();
-  
+
   void disposeProcessInstanceStartContext();
 
 }

@@ -2125,6 +2125,7 @@ public class BpmnParse extends Parse {
         }
       } else if (terminateEventDefinition != null) {
         activity.setActivityBehavior(new TerminateEndEventActivityBehavior());
+        activity.setInterrupting(true);
       } else if (messageEventDefinitionElement != null) {
         if (isServiceTaskLike(messageEventDefinitionElement)) {
 
@@ -2204,33 +2205,40 @@ public class BpmnParse extends Parse {
       Element cancelEventDefinition = boundaryEventElement.element("cancelEventDefinition");
       Element compensateEventDefinition = boundaryEventElement.element("compensateEventDefinition");
       Element messageEventDefinition = boundaryEventElement.element("messageEventDefinition");
+
+      behavior = new BoundaryEventActivityBehavior();
       if (timerEventDefinition != null) {
-    	behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundaryTimerEventDefinition(timerEventDefinition, interrupting, nestedActivity);
+
       } else if (errorEventDefinition != null) {
-        interrupting = true; // non-interrupting not yet supported
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
+        interrupting = true; // always interrupting
         parseBoundaryErrorEventDefinition(errorEventDefinition, interrupting, parentActivity, nestedActivity);
+
       } else if (signalEventDefinition != null) {
-    	behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundarySignalEventDefinition(signalEventDefinition, interrupting, nestedActivity);
+
       } else if (cancelEventDefinition != null) {
-        // always interrupting
-        behavior = parseBoundaryCancelEventDefinition(cancelEventDefinition, nestedActivity);
+        interrupting = true; // always interrupting
+
       } else if(compensateEventDefinition != null) {
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseCatchCompensateEventDefinition(compensateEventDefinition, nestedActivity);
+
       } else if(messageEventDefinition != null) {
-        behavior = new BoundaryEventActivityBehavior(interrupting, nestedActivity.getId());
         parseBoundaryMessageEventDefinition(messageEventDefinition, interrupting, nestedActivity);
+
       } else {
         addError("Unsupported boundary event type", boundaryEventElement);
+
       }
 
       for (BpmnParseListener parseListener : parseListeners) {
         parseListener.parseBoundaryEvent(boundaryEventElement, scopeElement, nestedActivity);
       }
+      nestedActivity.setInterrupting(interrupting);
+      nestedActivity.setConcurrent(!interrupting);
 
+      // scope of the boundary event is the parent of the activity to which it is attached.
+      nestedActivity.setScope(parentActivity.getParentScope());
       nestedActivity.setActivityBehavior(behavior);
     }
   }

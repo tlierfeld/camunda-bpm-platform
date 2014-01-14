@@ -23,9 +23,9 @@ import org.camunda.bpm.engine.impl.ExecutionQueryImpl;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.persistence.deploy.DeploymentCache;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEventSubscriptionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.runtime.Execution;
 
 /**
@@ -74,7 +74,7 @@ public class DefaultCorrelationHandler implements CorrelationHandler {
 
     } else if (!matchingExecutions.isEmpty()) {
       Execution matchingExecution = matchingExecutions.get(0);
-      return MessageCorrelationResult.matchedExecution((ExecutionEntity) matchingExecution);
+      return MessageCorrelationResult.matchedExecution((ActivityExecution) matchingExecution);
 
     } else {
       return null;

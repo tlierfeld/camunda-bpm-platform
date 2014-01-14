@@ -30,6 +30,7 @@ import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.impl.history.producer.HistoryEventProducer;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.javax.el.ELContext;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.variable.VariableType;
 import org.camunda.bpm.engine.impl.variable.VariableTypes;
 
@@ -299,7 +300,7 @@ public abstract class VariableScopeImpl implements Serializable, VariableScope {
     removeVariable(variableName, getSourceActivityExecution());
   }
 
-  protected void removeVariable(String variableName, ExecutionEntity sourceActivityExecution) {
+  protected void removeVariable(String variableName, ActivityExecution sourceActivityExecution) {
     ensureVariableInstancesInitialized();
     if (variableInstances.containsKey(variableName)) {
       removeVariableLocal(variableName);

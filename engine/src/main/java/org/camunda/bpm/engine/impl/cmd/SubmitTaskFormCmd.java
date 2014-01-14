@@ -25,8 +25,8 @@ import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.impl.history.producer.HistoryEventProducer;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.task.DelegationState;
 
 
@@ -63,7 +63,7 @@ public class SubmitTaskFormCmd implements Command<Object>, Serializable {
     final ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
 
     int historyLevel = processEngineConfiguration.getHistoryLevel();
-    ExecutionEntity execution = task.getExecution();
+    ActivityExecution execution = task.getExecution();
     if (historyLevel>=ProcessEngineConfigurationImpl.HISTORYLEVEL_AUDIT && execution != null) {
 
       final HistoryEventProducer eventProducer = processEngineConfiguration.getHistoryEventProducer();

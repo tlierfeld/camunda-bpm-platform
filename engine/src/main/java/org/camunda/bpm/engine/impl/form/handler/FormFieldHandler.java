@@ -26,6 +26,7 @@ import org.camunda.bpm.engine.impl.el.StartProcessVariableScope;
 import org.camunda.bpm.engine.impl.form.FormFieldImpl;
 import org.camunda.bpm.engine.impl.form.type.AbstractFormFieldType;
 import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * @author Daniel Meyer
@@ -78,7 +79,7 @@ public class FormFieldHandler {
 
   // submit /////////////////////////////////////////////
 
-  public void handleSubmit(ExecutionEntity execution, Map<String, Object> values, Map<String, Object> allValues) {
+  public void handleSubmit(ActivityExecution execution, Map<String, Object> values, Map<String, Object> allValues) {
     Object submittedValue = values.remove(id);
 
     // update variable(s)

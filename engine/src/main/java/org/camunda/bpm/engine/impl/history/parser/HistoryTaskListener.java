@@ -18,8 +18,8 @@ import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
 import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.impl.history.producer.HistoryEventProducer;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * <p>A {@link TaskListener} implementation that delegates to a
@@ -42,7 +42,7 @@ public abstract class HistoryTaskListener implements TaskListener {
     final HistoryEventHandler historyEventHandler = Context.getProcessEngineConfiguration()
       .getHistoryEventHandler();
     
-    ExecutionEntity execution = ((TaskEntity) task).getExecution();
+    ActivityExecution execution = ((TaskEntity) task).getExecution();
     
     if (execution != null) {
       
@@ -56,6 +56,6 @@ public abstract class HistoryTaskListener implements TaskListener {
     
   }
   
-  protected abstract HistoryEvent createHistoryEvent(DelegateTask task, ExecutionEntity execution);
+  protected abstract HistoryEvent createHistoryEvent(DelegateTask task, ActivityExecution execution);
 
 }

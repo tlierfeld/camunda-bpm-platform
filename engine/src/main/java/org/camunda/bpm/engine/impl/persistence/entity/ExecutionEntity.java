@@ -225,6 +225,9 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
 
   protected boolean forcedUpdate;
 
+  /** an activity which is to be started concurrently */
+  protected PvmActivity activityStartConcurrent;
+
   public ExecutionEntity() {
 
   }
@@ -448,8 +451,13 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
   }
 
   public void executeActivity(PvmActivity activity) {
-    setActivity((ActivityImpl) activity);
-    performOperation(AtomicOperation.ACTIVITY_START);
+    if(activity.isConcurrent()) {
+      this.activityStartConcurrent = activity;
+      performOperation(AtomicOperation.ACTIVITY_START_CONCURRENT);
+    } else {
+      setActivity((ActivityImpl) activity);
+      performOperation(AtomicOperation.ACTIVITY_START);
+    }
   }
 
   public List<ActivityExecution> findInactiveConcurrentExecutions(PvmActivity activity) {
@@ -496,7 +504,7 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
 
     if (recyclableExecutions.size()>1) {
       for (ActivityExecution recyclableExecution: recyclableExecutions) {
-        if (((ExecutionEntity)recyclableExecution).isScope()) {
+        if (((ActivityExecution)recyclableExecution).isScope()) {
           throw new PvmException("joining scope executions is not allowed");
         }
       }
@@ -525,7 +533,7 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
 
       List<ExecutionEntity> recyclableExecutionImpls = (List) recyclableExecutions;
       recyclableExecutions.remove(concurrentRoot);
-      for (ExecutionEntity prunedExecution: recyclableExecutionImpls) {
+      for (ActivityExecution prunedExecution: recyclableExecutionImpls) {
         // End the pruned executions if necessary.
         // Some recyclable executions are inactivated (joined executions)
         // Others are already ended (end activities)
@@ -938,7 +946,7 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
     this.parent = (ExecutionEntity) parent;
 
     if (parent != null) {
-      this.parentId = ((ExecutionEntity)parent).getId();
+      this.parentId = ((ActivityExecution)parent).getId();
     } else {
       this.parentId = null;
     }
@@ -962,7 +970,7 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
     }
 
     if (superExecution != null) {
-      this.superExecutionId = ((ExecutionEntity)superExecution).getId();
+      this.superExecutionId = ((ActivityExecution)superExecution).getId();
     } else {
       this.superExecutionId = null;
     }
@@ -1199,6 +1207,35 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
 
     // set replaced by activity to our activity id
     replacedBy.setActivityInstanceId(activityInstanceId);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void replace(InterpretableExecution execution) {
+    ExecutionEntity replacedExecution = (ExecutionEntity) execution;
+
+    CommandContext commandContext = Context.getCommandContext();
+
+    // update the related tasks
+    for (TaskEntity task: replacedExecution.getTasksInternal()) {
+      task.setExecutionId(getId());
+      task.setExecution(this);
+
+      // update the related local task variables
+      List<VariableInstanceEntity> variables = (List) commandContext
+        .getVariableInstanceManager()
+        .findVariableInstancesByTaskId(task.getId());
+
+      for (VariableInstanceEntity variable : variables) {
+        variable.setExecution(this);
+      }
+
+      addTask(task);
+    }
+    replacedExecution.getTasksInternal().clear();
+
+    // activity instance id handling
+    this.activityInstanceId = execution.getActivityInstanceId();
+    execution.leaveActivityInstance();
   }
 
   // variables ////////////////////////////////////////////////////////////////
@@ -1620,6 +1657,14 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
     } else {
       return null;
     }
+  }
+
+  /**
+   * @return the activityStartConcurrent
+   */
+  @Override
+  public PvmActivity getActivityStartConcurrent() {
+    return activityStartConcurrent;
   }
 
 }

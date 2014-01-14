@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngineException;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.runtime.ExecutionQuery;
@@ -1076,7 +1076,7 @@ public void testBooleanVariable() throws Exception {
     List<Execution> concurrentExecutions = runtimeService.createExecutionQuery().processInstanceId(pi.getId()).list();
     assertEquals(3, concurrentExecutions.size());
     for (Execution execution : concurrentExecutions) {
-      if (!((ExecutionEntity)execution).isProcessInstance()) {
+      if (!((ActivityExecution)execution).isProcessInstance()) {
         // only the concurrent executions, not the root one, would be cooler to query that directly, see http://jira.codehaus.org/browse/ACT-1373        
         runtimeService.setVariableLocal(execution.getId(), "x", "child");
       }      

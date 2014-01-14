@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.VariableScopeImpl;
 import org.camunda.bpm.engine.impl.pvm.PvmScope;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 
 /**
@@ -63,7 +64,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
 
   }
 
-  protected void initProcessInstanceEvent(HistoricProcessInstanceEventEntity evt, ExecutionEntity execution, String eventType) {
+  protected void initProcessInstanceEvent(HistoricProcessInstanceEventEntity evt, ActivityExecution execution, String eventType) {
 
     String processDefinitionId = execution.getProcessDefinitionId();
     String processInstanceId = execution.getProcessInstanceId();
@@ -130,10 +131,10 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
   }
 
   protected HistoryEvent createHistoricVariableEvent(VariableInstanceEntity variableInstance, VariableScopeImpl variableScopeImpl, String eventType) {
-    ExecutionEntity execution = null;
+    ActivityExecution execution = null;
 
     if (variableScopeImpl instanceof ExecutionEntity) {
-      execution = (ExecutionEntity) variableScopeImpl;
+      execution = (ActivityExecution) variableScopeImpl;
 
     } else if (variableScopeImpl instanceof TaskEntity) {
       execution = ((TaskEntity) variableScopeImpl).getExecution();
@@ -155,11 +156,11 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
   // event instance factory ////////////////////////
 
 
-  protected HistoricProcessInstanceEventEntity newProcessInstanceEventEntity(ExecutionEntity execution) {
+  protected HistoricProcessInstanceEventEntity newProcessInstanceEventEntity(ActivityExecution execution) {
     return new HistoricProcessInstanceEventEntity();
   }
 
-  protected HistoricActivityInstanceEventEntity newActivityInstanceEventEntity(ExecutionEntity execution) {
+  protected HistoricActivityInstanceEventEntity newActivityInstanceEventEntity(ActivityExecution execution) {
     return new HistoricActivityInstanceEventEntity();
   }
 
@@ -167,7 +168,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
     return new HistoricTaskInstanceEventEntity();
   }
 
-  protected HistoricVariableUpdateEventEntity newVariableUpdateEventEntity(ExecutionEntity execution) {
+  protected HistoricVariableUpdateEventEntity newVariableUpdateEventEntity(ActivityExecution execution) {
     return new HistoricVariableUpdateEventEntity();
   }
 
@@ -175,11 +176,11 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
     return new HistoricFormPropertyEventEntity();
   }
 
-  protected HistoricProcessInstanceEventEntity loadProcessInstanceEventEntity(ExecutionEntity execution) {
+  protected HistoricProcessInstanceEventEntity loadProcessInstanceEventEntity(ActivityExecution execution) {
     return newProcessInstanceEventEntity(execution);
   }
 
-  protected HistoricActivityInstanceEventEntity loadActivityInstanceEventEntity(ExecutionEntity execution) {
+  protected HistoricActivityInstanceEventEntity loadActivityInstanceEventEntity(ActivityExecution execution) {
     return newActivityInstanceEventEntity(execution);
   }
 
@@ -202,7 +203,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
     evt.setStartTime(ClockUtil.getCurrentTime());
 
     // set super process instance id
-    ExecutionEntity superExecution = executionEntity.getSuperExecution();
+    ActivityExecution superExecution = executionEntity.getSuperExecution();
     if (superExecution != null) {
       evt.setSuperProcessInstanceId(superExecution.getProcessInstanceId());
     }
@@ -239,7 +240,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
   }
 
   public HistoryEvent createActivityInstanceStartEvt(DelegateExecution execution) {
-    final ExecutionEntity executionEntity = (ExecutionEntity) execution;
+    final ActivityExecution executionEntity = (ActivityExecution) execution;
 
     // create event instance
     HistoricActivityInstanceEventEntity evt = newActivityInstanceEventEntity(executionEntity);
@@ -268,7 +269,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
     }
 
     // update sub process reference
-    ExecutionEntity subProcessInstance = executionEntity.getSubProcessInstance();
+    ActivityExecution subProcessInstance = executionEntity.getSubProcessInstance();
     if (subProcessInstance != null) {
       evt.setCalledProcessInstanceId(subProcessInstance.getId());
     }
@@ -277,7 +278,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
   }
 
   public HistoryEvent createActivityInstanceEndEvt(DelegateExecution execution) {
-    final ExecutionEntity executionEntity = (ExecutionEntity) execution;
+    final ActivityExecution executionEntity = (ActivityExecution) execution;
 
     // create event instance
     HistoricActivityInstanceEventEntity evt = loadActivityInstanceEventEntity(executionEntity);
@@ -353,7 +354,7 @@ public class DefaultHistoryEventProducer implements HistoryEventProducer {
 
   // form Properties ///////////////////////////
 
-  public HistoryEvent createFormPropertyUpdateEvt(ExecutionEntity execution, String propertyId, Object propertyValue, String taskId) {
+  public HistoryEvent createFormPropertyUpdateEvt(ActivityExecution execution, String propertyId, Object propertyValue, String taskId) {
 
     final IdGenerator idGenerator = Context.getProcessEngineConfiguration().getIdGenerator();
 

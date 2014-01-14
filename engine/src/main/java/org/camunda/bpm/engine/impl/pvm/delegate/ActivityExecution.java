@@ -168,4 +168,7 @@ public interface ActivityExecution extends DelegateExecution {
    */
   void destroyScope(String string);
 
+  /** An activity which is to be started concurrently */
+  PvmActivity getActivityStartConcurrent();
+
 }

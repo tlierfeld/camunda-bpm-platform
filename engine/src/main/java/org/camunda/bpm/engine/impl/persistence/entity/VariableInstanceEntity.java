@@ -19,6 +19,7 @@ import java.util.Map;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.db.HasRevision;
 import org.camunda.bpm.engine.impl.db.PersistentObject;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.variable.ValueFields;
 import org.camunda.bpm.engine.impl.variable.VariableType;
 import org.camunda.bpm.engine.runtime.VariableInstance;
@@ -78,7 +79,7 @@ public class VariableInstanceEntity implements VariableInstance, ValueFields, Pe
     return variableInstance;
   }
 
-  public void setExecution(ExecutionEntity execution) {
+  public void setExecution(ActivityExecution execution) {
     this.executionId = execution.getId();
     this.processInstanceId = execution.getProcessInstanceId();
     forcedUpdate = true;

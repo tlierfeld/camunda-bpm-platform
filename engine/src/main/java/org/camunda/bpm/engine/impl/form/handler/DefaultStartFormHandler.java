@@ -19,8 +19,8 @@ import org.camunda.bpm.engine.form.StartFormData;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
 import org.camunda.bpm.engine.impl.form.StartFormDataImpl;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 
 
@@ -49,7 +49,7 @@ public class DefaultStartFormHandler extends DefaultFormHandler implements Start
     return startFormData;
   }
 
-  public ExecutionEntity submitStartFormData(ExecutionEntity processInstance, Map<String, Object> properties) {
+  public ActivityExecution submitStartFormData(ActivityExecution processInstance, Map<String, Object> properties) {
     submitFormProperties(properties, processInstance);
     return processInstance;
   }

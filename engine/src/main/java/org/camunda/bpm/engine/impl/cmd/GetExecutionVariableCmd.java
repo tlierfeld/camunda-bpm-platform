@@ -17,7 +17,7 @@ import java.io.Serializable;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**
@@ -44,7 +44,7 @@ public class GetExecutionVariableCmd implements Command<Object>, Serializable {
       throw new ProcessEngineException("variableName is null");
     }
     
-    ExecutionEntity execution = commandContext
+    ActivityExecution execution = commandContext
       .getExecutionManager()
       .findExecutionById(executionId);
     

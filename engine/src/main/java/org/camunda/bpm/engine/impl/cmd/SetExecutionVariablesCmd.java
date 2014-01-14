@@ -18,7 +18,7 @@ import java.util.Map;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**
@@ -45,7 +45,7 @@ public class SetExecutionVariablesCmd implements Command<Object>, Serializable {
       throw new ProcessEngineException("executionId is null");
     }
     
-    ExecutionEntity execution = commandContext
+    ActivityExecution execution = commandContext
       .getExecutionManager()
       .findExecutionById(executionId);
     

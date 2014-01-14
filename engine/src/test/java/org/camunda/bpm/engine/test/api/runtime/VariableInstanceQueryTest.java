@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngineException;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.runtime.ActivityInstance;
 import org.camunda.bpm.engine.runtime.Execution;
@@ -1643,7 +1643,7 @@ public class VariableInstanceQueryTest extends PluggableProcessEngineTestCase {
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("stringVar", "test");
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
-    ExecutionEntity execution = (ExecutionEntity) processInstance;
+    ActivityExecution execution = (ActivityExecution) processInstance;
 
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.setVariableLocal(task.getId(), "taskVariable", "aCustomValue");
@@ -1676,15 +1676,15 @@ public class VariableInstanceQueryTest extends PluggableProcessEngineTestCase {
     Map<String, Object> variables1 = new HashMap<String, Object>();
     variables1.put("stringVar", "test");
     variables1.put("myVar", "test123");
-    ExecutionEntity execution1 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
+    ActivityExecution execution1 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
 
     Map<String, Object> variables2 = new HashMap<String, Object>();
     variables2.put("myVar", "test123");
-    ExecutionEntity execution2 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
+    ActivityExecution execution2 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
 
     Map<String, Object> variables3 = new HashMap<String, Object>();
     variables3.put("myVar", "test123");
-    ExecutionEntity execution3 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables3);
+    ActivityExecution execution3 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables3);
 
     Task task1 = taskService.createTaskQuery().processInstanceId(execution1.getProcessInstanceId()).singleResult();
     Task task2 = taskService.createTaskQuery().processInstanceId(execution2.getProcessInstanceId()).singleResult();
@@ -1846,11 +1846,11 @@ public class VariableInstanceQueryTest extends PluggableProcessEngineTestCase {
     // given
     Map<String, Object> variables1 = new HashMap<String, Object>();
     variables1.put("intVar", (int)123);
-    ExecutionEntity execution1 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
+    ActivityExecution execution1 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
 
     Map<String, Object> variables2 = new HashMap<String, Object>();
     variables2.put("stringVar", "test");
-    ExecutionEntity execution2 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
+    ActivityExecution execution2 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
 
     int comparisonResult = execution1.getActivityInstanceId().compareTo(execution2.getActivityInstanceId());
 
@@ -1886,11 +1886,11 @@ public class VariableInstanceQueryTest extends PluggableProcessEngineTestCase {
     // given
     Map<String, Object> variables1 = new HashMap<String, Object>();
     variables1.put("intVar", (int)123);
-    ExecutionEntity execution1 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
+    ActivityExecution execution1 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables1);
 
     Map<String, Object> variables2 = new HashMap<String, Object>();
     variables2.put("stringVar", "test");
-    ExecutionEntity execution2 = (ExecutionEntity) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
+    ActivityExecution execution2 = (ActivityExecution) runtimeService.startProcessInstanceByKey("oneTaskProcess", variables2);
 
     int comparisonResult = execution1.getActivityInstanceId().compareTo(execution2.getActivityInstanceId());
 

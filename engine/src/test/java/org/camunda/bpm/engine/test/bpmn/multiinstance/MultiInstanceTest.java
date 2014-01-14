@@ -25,7 +25,7 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.impl.util.CollectionUtil;
@@ -1107,7 +1107,7 @@ public class MultiInstanceTest extends PluggableProcessEngineTestCase {
     assertEquals(5, executions.size());
     
     for (Execution execution : executions) {
-      ExecutionEntity entity = (ExecutionEntity) execution;
+      ActivityExecution entity = (ActivityExecution) execution;
       
       if (!entity.getId().equals(instance.getId()) && !entity.getParentId().equals(instance.getId())) {
         // child executions

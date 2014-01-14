@@ -20,8 +20,8 @@ import java.util.Map;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.SignalEventSubscriptionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**
@@ -49,7 +49,7 @@ public class SignalEventReceivedCmd implements Command<Void> {
         .findSignalEventSubscriptionsByEventName(eventName);              
     } else {
       
-      ExecutionEntity execution = commandContext.getExecutionManager().findExecutionById(executionId);
+      ActivityExecution execution = commandContext.getExecutionManager().findExecutionById(executionId);
       
       if (execution == null) {
         throw new ProcessEngineException("Cannot find execution with id '" + executionId + "'");

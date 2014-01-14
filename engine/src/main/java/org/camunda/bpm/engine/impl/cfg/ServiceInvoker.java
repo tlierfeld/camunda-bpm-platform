@@ -15,8 +15,8 @@ package org.camunda.bpm.engine.impl.cfg;
 
 import java.util.Map;
 
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**
@@ -24,5 +24,5 @@ import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
  */
 public interface ServiceInvoker {
 
-  void invoke(String serviceType, Map<String,Object> parameters, ExecutionEntity execution, TaskEntity task);
+  void invoke(String serviceType, Map<String,Object> parameters, ActivityExecution execution, TaskEntity task);
 }

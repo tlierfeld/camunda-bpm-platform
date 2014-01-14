@@ -64,6 +64,8 @@ public class ExecutionImpl implements
   /** current activity */
   protected ActivityImpl activity;
 
+  protected PvmActivity activityStartConcurrent;
+
   /** the Id of the current activity instance */
   protected String activityInstanceId;
 
@@ -558,8 +560,13 @@ public class ExecutionImpl implements
   }
 
   public void executeActivity(PvmActivity activity) {
-    setActivity((ActivityImpl) activity);
-    performOperation(AtomicOperation.ACTIVITY_START);
+    if(activity.isConcurrent()) {
+      this.activityStartConcurrent = activity;
+      performOperation(AtomicOperation.ACTIVITY_START_CONCURRENT);
+    } else {
+      setActivity((ActivityImpl) activity);
+      performOperation(AtomicOperation.ACTIVITY_START);
+    }
   }
 
   public List<ActivityExecution> findInactiveConcurrentExecutions(PvmActivity activity) {
@@ -880,6 +887,12 @@ public class ExecutionImpl implements
     // set execution to this activity instance
     replacedBy.setActivityInstanceId(this.activityInstanceId);
   }
+
+  public void replace(InterpretableExecution execution) {
+    this.activityInstanceId = execution.getActivityInstanceId();
+    execution.leaveActivityInstance();
+  }
+
   public void setExecutions(List<ExecutionImpl> executions) {
     this.executions = executions;
   }
@@ -986,6 +999,10 @@ public class ExecutionImpl implements
 
   public void setActivityInstanceId(String activityInstanceId) {
     this.activityInstanceId = activityInstanceId;
+  }
+
+  public PvmActivity getActivityStartConcurrent() {
+    return activityStartConcurrent;
   }
 
   public String getCurrentTransitionId() {

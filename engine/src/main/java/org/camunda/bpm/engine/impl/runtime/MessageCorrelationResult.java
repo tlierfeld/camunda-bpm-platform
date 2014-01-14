@@ -12,8 +12,8 @@
  */
 package org.camunda.bpm.engine.impl.runtime;
 
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * <p>The result of a message correlation. A message may be correlated to either
@@ -40,13 +40,13 @@ public class MessageCorrelationResult {
    */
   protected String resultType;
 
-  protected ExecutionEntity executionEntity;
+  protected ActivityExecution executionEntity;
 
   protected ProcessDefinitionEntity processDefinitionEntity;
 
   protected String startEventActivityId;
 
-  public static MessageCorrelationResult matchedExecution(ExecutionEntity executionEntity) {
+  public static MessageCorrelationResult matchedExecution(ActivityExecution executionEntity) {
     MessageCorrelationResult messageCorrelationResult = new MessageCorrelationResult();
     messageCorrelationResult.resultType = TYPE_EXECUTION;
     messageCorrelationResult.executionEntity = executionEntity;
@@ -63,7 +63,7 @@ public class MessageCorrelationResult {
 
   // getters ////////////////////////////////////////////
 
-  public ExecutionEntity getExecutionEntity() {
+  public ActivityExecution getExecutionEntity() {
     return executionEntity;
   }
 
