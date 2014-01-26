@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.camunda.bpm.cockpit.Cockpit;
@@ -29,6 +30,7 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
  *
  * @author nico.rehwaldt
  */
+@ApplicationPath("/api/cockpit/")
 public class CockpitApplication extends Application {
 
   @Override

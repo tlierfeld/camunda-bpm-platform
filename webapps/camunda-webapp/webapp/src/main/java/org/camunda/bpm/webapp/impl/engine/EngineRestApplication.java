@@ -15,6 +15,7 @@ package org.camunda.bpm.webapp.impl.engine;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.camunda.bpm.engine.rest.exception.ExceptionHandler;
@@ -29,6 +30,7 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
  *
  * @author nico.rehwaldt
  */
+@ApplicationPath("/api/engine/")
 public class EngineRestApplication extends Application {
 
   @Override

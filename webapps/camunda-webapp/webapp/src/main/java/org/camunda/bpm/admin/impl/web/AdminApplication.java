@@ -15,6 +15,7 @@ package org.camunda.bpm.admin.impl.web;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.camunda.bpm.engine.rest.exception.ExceptionHandler;
@@ -28,6 +29,7 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
  *
  * @author Daniel Meyer
  */
+@ApplicationPath("/api/admin/")
 public class AdminApplication extends Application {
 
   @Override
